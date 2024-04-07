@@ -4,8 +4,12 @@ import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
-import { getManagedRestaurant } from '@/api/get-managed-restaurant'
+import {
+  getManagedRestaurant,
+  getManagedRestaurantResponse,
+} from '@/api/get-managed-restaurant'
 import { updateProfile } from '@/api/upddate-profile'
+import { queryClient } from '@/lib/react-query'
 
 import { Button } from './ui/button'
 import {
@@ -47,6 +51,21 @@ export function StoreProfileDialog() {
 
   const { mutateAsync: updateProfileFn } = useMutation({
     mutationFn: updateProfile,
+    onSuccess(_, { name, description }) {
+      const cached = queryClient.getQueryData<getManagedRestaurantResponse>([
+        'managed-restaurant',
+      ])
+      if (cached) {
+        queryClient.setQueryData<getManagedRestaurantResponse>(
+          ['managed-restaurant'],
+          {
+            ...cached,
+            name,
+            description,
+          },
+        )
+      }
+    },
   })
 
   async function handleUpdateProfile(data: StoreProfileSchema) {
