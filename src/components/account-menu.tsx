@@ -39,6 +39,7 @@ export function AccountMenu() {
       navigate('/sign-in', { replace: true })
     },
   })
+  console.log(isLoadingProfile)
   return (
     <Dialog>
       <DropdownMenu>
