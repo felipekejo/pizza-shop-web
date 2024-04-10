@@ -5,7 +5,7 @@ import { ArrowRight, Search, X } from 'lucide-react'
 import { useState } from 'react'
 
 import { cancelOrder } from '@/api/cancel-order'
-import { GetOrdersQuery, GetOrdersResponse } from '@/api/getOrders'
+import { GetOrdersResponse } from '@/api/getOrders'
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogTrigger } from '@/components/ui/dialog'
 import { TableCell, TableRow } from '@/components/ui/table'
@@ -29,7 +29,7 @@ export function OrderTableRow({ order }: OrderTableRowProps) {
   const { mutateAsync: cancelOrderFn } = useMutation({
     mutationFn: cancelOrder,
     async onSuccess(_, { orderId }) {
-      const ordersListCache = queryClient.getQueriesData<GetOrdersQuery>({
+      const ordersListCache = queryClient.getQueriesData<GetOrdersResponse>({
         queryKey: ['orders'],
       })
 
